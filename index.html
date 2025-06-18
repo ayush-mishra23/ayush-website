@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Web Designer | Portfolio</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f8f8;
+      color: #333;
+    }
+    header {
+      background: linear-gradient(45deg, #00b894, #0984e3);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .section {
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .project-grid img {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .skills ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .skills li {
+      background: #dfe6e9;
+      padding: 10px 20px;
+      border-radius: 20px;
+    }
+    .admin-panel, .login-form {
+      display: none;
+      margin-top: 20px;
+    }
+    input, textarea, button {
+      padding: 10px;
+      margin: 5px 0;
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #00b894;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .logout {
+      float: right;
+      background: red;
+      margin-top: -40px;
+    }
+    .whatsapp-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25D366;
+      color: white;
+      padding: 15px;
+      border-radius: 50%;
+      font-size: 20px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Ayush Mishra</h1>
+  <p>Professional Web Designer</p>
+  <button class="logout" onclick="logout()" style="display:none">Logout</button>
+</header>
+
+<section class="section" id="projects-section">
+  <h2>My Projects</h2>
+  <div class="project-grid" id="project-list">
+    <!-- Dynamic Projects will appear here -->
+  </div>
+</section>
+
+<section class="section" id="services">
+  <h2>💼 My Services</h2>
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+    <div style="background:#ffeaa7; padding:20px; border-radius:15px; width:280px; box-shadow:0 0 10px #ccc">
+      <h3>🌐 Website Design</h3>
+      <p>Custom design for your business, mobile-friendly, SEO-ready.</p>
+      <h2>₹4,999</h2>
+      <a href="https://wa.me/91XXXXXXXXXX?text=Hi%20Ayush%2C%20I%20want%20Website%20Design%20Service" target="_blank">
+        <button>Get Started</button>
+      </a>
+    </div>
+    <div style="background:#dfe6e9; padding:20px; border-radius:15px; width:280px; box-shadow:0 0 10px #ccc">
+      <h3>📱 Responsive Conversion</h3>
+      <p>Convert any site into mobile/tablet friendly version.</p>
+      <h2>₹2,499</h2>
+      <a href="https://wa.me/91XXXXXXXXXX?text=Hi%20Ayush%2C%20I%20want%20Responsive%20Design%20Service" target="_blank">
+        <button>Get Started</button>
+      </a>
+    </div>
+    <div style="background:#fab1a0; padding:20px; border-radius:15px; width:280px; box-shadow:0 0 10px #ccc">
+      <h3>🛠️ Maintenance</h3>
+      <p>Monthly updates, backups, and speed optimization.</p>
+      <h2>₹999 /mo</h2>
+      <a href="https://wa.me/91XXXXXXXXXX?text=Hi%20Ayush%2C%20I%20want%20Website%20Maintenance%20Service" target="_blank">
+        <button>Get Started</button>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section skills">
+  <h2>Skills</h2>
+  <ul>
+    <li>HTML</li>
+    <li>CSS</li>
+    <li>JavaScript</li>
+    <li>Bootstrap</li>
+    <li>Responsive Design</li>
+  </ul>
+</section>
+
+<section class="section">
+  <h2>Admin Login</h2>
+  <div class="login-form" id="login-form">
+    <input type="password" id="admin-pass" placeholder="Enter Admin Password">
+    <button onclick="login()">Login</button>
+  </div>
+  <div class="admin-panel" id="admin-panel">
+    <h3>Add New Project</h3>
+    <input type="text" id="project-title" placeholder="Project Title">
+    <input type="text" id="project-image" placeholder="Image URL">
+    <button onclick="addProject()">Add Project</button>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <h2>📬 Contact Me</h2>
+  <form id="contact-form">
+    <input type="text" name="user_name" placeholder="Your Name" required>
+    <input type="email" name="user_email" placeholder="Your Email" required>
+    <textarea name="message" placeholder="Your Message" required></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+  <p id="status" style="margin-top:10px;"></p>
+</section>
+
+<a class="whatsapp-btn" href="https://wa.me/91XXXXXXXXXX" target="_blank">💬</a>
+
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+<script>
+  (function(){
+    emailjs.init("YOUR_PUBLIC_KEY"); // Replace with your EmailJS public key
+  })();
+
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    document.getElementById("status").innerText = "Sending...";
+
+    emailjs.sendForm('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', this)
+      .then(function() {
+        document.getElementById("status").innerText = "Message sent successfully!";
+      }, function(error) {
+        document.getElementById("status").innerText = "Failed to send. Try again.";
+        console.log(error);
+      });
+
+    this.reset();
+  });
+
+  function login() {
+    const password = document.getElementById('admin-pass').value;
+    if (password === 'admin123') {
+      document.getElementById('admin-panel').style.display = 'block';
+      document.getElementById('login-form').style.display = 'none';
+      document.querySelector('.logout').style.display = 'inline-block';
+    } else {
+      alert('Wrong password!');
+    }
+  }
+
+  function logout() {
+    document.getElementById('admin-panel').style.display = 'none';
+    document.getElementById('login-form').style.display = 'block';
+    document.querySelector('.logout').style.display = 'none';
+  }
+
+  function addProject() {
+    const title = document.getElementById('project-title').value;
+    const image = document.getElementById('project-image').value;
+    if (title && image) {
+      const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+      projects.push({ title, image });
+      localStorage.setItem('projects', JSON.stringify(projects));
+      displayProjects();
+      document.getElementById('project-title').value = '';
+      document.getElementById('project-image').value = '';
+    } else {
+      alert("Please fill all fields.");
+    }
+  }
+
+  function displayProjects() {
+    const list = document.getElementById('project-list');
+    list.innerHTML = '';
+    const projects = JSON.parse(localStorage.getItem('projects') || '[]');
+    projects.forEach(p => {
+      list.innerHTML += `<div><img src="${p.image}" alt="${p.title}"><p>${p.title}</p></div>`;
+    });
+  }
+
+  displayProjects();
+</script>
+
+</body>
+</html>
